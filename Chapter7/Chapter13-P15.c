@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 #define STACK_SIZE 100
 #define MAX 199
@@ -17,21 +18,24 @@ void stack_overflow(void);
 void stack_underflow(void);
 int evaluate_RPN_expression(const char *expression);
 
+/* main function */
 int main(void)
 {
-	char experssion[MAX];
-	
+	char expression[MAX];
+
 	for ( ; ; ) {
 		printf("Enter an RPN expression: ");
 		gets(expression);
-		if (experssion[0] < '0' && expression[0] > '9')
+		if (expression[0] < '0' || expression[0] > '9')
 			break;
-		printf("Value of expression: %d\n", evaluate_RPN_expression(expression);	
+
+		printf("Value of expression: %d\n", evaluate_RPN_expression(expression));
 	}
-	
+
 	return 0;
 }
 
+/* function */
 void make_empty(void)
 {
 	top = 0;
@@ -73,31 +77,34 @@ void stack_underflow(void)
 	printf("Not enough operands in expression");
 }
 
-int ecaluate_RPN_expression(const char *expression)
+int evaluate_RPN_expression(const char *expression)
 {
-	int i;
-	
+	int i, temp;
+
 	make_empty();
-	
+
 	for (i = 0; expression[i] != '\0'; i++) {
-		if (experssion[i] >= '0' && experssion[i] <= '9')
-			push(int(experssion[i]) - int('0'));	//attention!!!!
-		switch (expression[i]) {
-			case '+':
-				push(top - 1) = pop + pop;
-				break;
-			case '-':
-				push(top - 1) = pop - pop;
-				break;			
-			case '*':
-				push(top - 1) = pop * pop;
-				break;
-			case '/':
-				push(top - 1) = pop / pop;
-				break;
-			case '=':
-				return content[top]; 
-				break;
-		}
+		if (expression[i] >= '0' && expression[i] <= '9')
+			push(expression[i] - '0');
+        else
+            switch (expression[i]) {
+                case '+':
+                    push(pop() + pop());
+                    break;
+                case '-':
+                    temp = pop();
+                    push(pop() - temp);
+                    break;
+                case '*':
+                    push(pop() * pop());
+                    break;
+                case '/':
+                    temp = pop();
+                    push(pop() / temp);
+                    break;
+                case '=':
+                    return pop();
+                    break;
+            }
 	}
-}	
+}
