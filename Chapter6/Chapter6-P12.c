@@ -2,7 +2,7 @@
 
 int main(void)
 {
-    //¶¨Òå±äÁ¿£¬eÎªÊäÈëµÄÏî
+    //å®šä¹‰å˜é‡ï¼Œeä¸ºè¾“å…¥çš„é¡¹
     int i = 1,demon = 1;
     float e, sum = 1.00f;
 
@@ -13,7 +13,7 @@ int main(void)
         demon *= i;
         sum = sum + 1.00f / demon;
         printf("%d of terms is %f\n", i+1, 1.00f / demon);
-        //ÓÃÀ´ÏÔÊ¾Ã¿Ò»¸öÏîµÄÖµ£¬ÓëÊäÈëÏî×ö¶Ô±È
+        //ç”¨æ¥æ˜¾ç¤ºæ¯ä¸€ä¸ªé¡¹çš„å€¼ï¼Œä¸è¾“å…¥é¡¹åšå¯¹æ¯”
         i++ ;
     }
     printf("e is %f \nsum is %f\n", e, sum);

@@ -1,15 +1,15 @@
 #include <stdio.h>
 int main (void)
 {
-    //¶¨Òå±äÁ¿
+    //å®šä¹‰å˜é‡
     float num, num_max;
     num = 1;
 
-    //¶ÁÈ¡µÚÒ»¸öÊı£¬ÏÖÎª×î´ó
+    //è¯»å–ç¬¬ä¸€ä¸ªæ•°ï¼Œç°ä¸ºæœ€å¤§
     printf ("Enter a number: ");
     scanf ("%f", & num_max);
 
-    //Ñ­»·È¡Êı
+    //å¾ªç¯å–æ•°
     if (num_max > 0){
         while (num > 0){
             printf ("Enter a number:");

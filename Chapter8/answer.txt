@@ -1,0 +1,154 @@
+Answers to Selected Programming Projects
+
+2. [was #2]
+
+#include <stdio.h>
+
+int main(void)
+{
+  int digit_count[10] = {0};
+  int digit;
+  long n;
+
+  printf("Enter a number: ");
+  scanf("%ld", &n);
+
+  while (n > 0) {
+    digit = n % 10;
+    digit_count[digit]++;
+    n /= 10;
+  }
+
+  printf ("Digit:      ");
+  for (digit = 0; digit <= 9; digit++)
+    printf("%3d", digit);
+  printf("\nOccurrences:");
+  for (digit = 0; digit <= 9; digit++)
+    printf("%3d", digit_count[digit]);
+  printf("\n");
+
+  return 0;
+}
+5. [was #6]
+
+#include <stdio.h>
+
+#define NUM_RATES ((int) (sizeof(value) / sizeof(value[0])))
+#define INITIAL_BALANCE 100.00
+
+int main(void)
+{
+  int i, low_rate, month, num_years, year;
+  double value[5];
+
+  printf("Enter interest rate: ");
+  scanf("%d", &low_rate);
+  printf("Enter number of years: ");
+  scanf("%d", &num_years);
+
+  printf("\nYears");
+  for (i = 0; i < NUM_RATES; i++) {
+    printf("%6d%%", low_rate + i);
+    value[i] = INITIAL_BALANCE;
+  }
+  printf("\n");
+
+  for (year = 1; year <= num_years; year++) {
+    printf("%3d    ", year);
+    for (i = 0; i < NUM_RATES; i++) {
+      for (month = 1; month <= 12; month++)
+        value[i] += ((double) (low_rate + i) / 12) / 100.0 * value[i];
+      printf("%7.2f", value[i]);
+    }
+    printf("\n");
+  }
+
+  return 0;
+}
+8. [was #12]
+
+#include <stdio.h>
+
+#define NUM_QUIZZES  5
+#define NUM_STUDENTS 5
+
+int main(void)
+{
+  int grades[NUM_STUDENTS][NUM_QUIZZES];
+  int high, low, quiz, student, total;
+
+  for (student = 0; student < NUM_STUDENTS; student++) {
+    printf("Enter grades for student %d: ", student + 1);
+    for (quiz = 0; quiz < NUM_QUIZZES; quiz++)
+      scanf("%d", &grades[student][quiz]);
+  }
+
+  printf("\nStudent  Total  Average\n");
+  for (student = 0; student < NUM_STUDENTS; student++) {
+    printf("%4d      ", student + 1);
+    total = 0;
+    for (quiz = 0; quiz < NUM_QUIZZES; quiz++)
+      total += grades[student][quiz];
+    printf("%3d     %3d\n", total, total / NUM_QUIZZES);
+  }
+
+  printf("\nQuiz  Average  High  Low\n");
+  for (quiz = 0; quiz < NUM_QUIZZES; quiz++) {
+    printf("%3d     ", quiz + 1);
+    total = 0;
+    high = 0;
+    low = 100;
+    for (student = 0; student < NUM_STUDENTS; student++) {
+      total += grades[student][quiz];
+      if (grades[student][quiz] > high)
+        high = grades[student][quiz];
+      if (grades[student][quiz] < low)
+        low = grades[student][quiz];
+    }
+    printf("%3d    %3d   %3d\n", total / NUM_STUDENTS, high, low);
+  }
+
+  return 0;
+}
+
+
+-声明未知长度的数组-
+就之前的章节里面没有提到很好的解决办法，在网上找资料时显示一些动态数组的解决办法，现在还看不太懂，所以在后面的学习中再解决这个问题，现在就先定义一个较大的长度
+从编程的第4题开始就有这个问题
+
+-算出输入数中的最大和最小值-
+编程题的第8题
+一般情况，先把第一个值赋给最大最小值
+特殊情况，知道了输入数的大小区间，例如是[0,100],那这个时候就可以初始化最大值为上限，最小值为下限
+
+-关于随机数的一个问题-
+srand((unsigned)time(NULL))和rand位置的问题
+有博主建议：
+放的地方离rand“远一点”，即两句执行的间隔大点
+比如不要把srand和rand同放在一个循环里，这样时间上基本没变，
+所取的种子是相同的。所以结果一样。
+具体的看下面链接，第一个介绍了srand的使用，第二个是上面建议的来源。
+链接：
+http://www.cnblogs.com/ecizep/archive/2015/03/24/4361607.html
+http://bbs.csdn.net/topics/310169092  #3
+
+-ch = getchar()-
+如果使用for(i = 0; (ch = getchar()) != '\n'); i++)很可能会导致程序无错误但可build不可run，正确的使用是
+ch = getchar();
+for (i = 0; ch != '\n'; i++) {
+    循环体;
+    ch = getchar();
+}
+
+-数组的初始化的一些问题-
+int a[100] = {0} 表示数组元素都是0，输出的话也是0
+但是
+char a[100] = {0} 不是表示数组元素都为0，结果输出的是空格
+char a[100] = {'0'} 与上面一样，输出的还是空格
+那要如何输出一行字符为0的数组呢？
+使用循环咯！
+for (i = 0; i < 100; i++)
+    a[i] = '0';
+说这个主要是为了说明
+有时候偷懒是偷不成的~~~~
+

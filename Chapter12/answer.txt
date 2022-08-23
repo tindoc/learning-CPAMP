@@ -1,0 +1,283 @@
+2. [was #2] The statement is illegal because pointers cannot be added. Here's a legal statement that has the desired effect:
+
+middle = low + (high - low) / 2;
+The value of (high - low) / 2 is an integer, not a pointer, so it can legally be added to low.
+
+4. [was #6]
+
+int *top_ptr;
+
+void make_empty(void)
+{
+  top_ptr = &contents[0];
+}
+
+bool is_empty(void)
+{
+  return top_ptr == &contents[0];
+}
+
+bool is_full(void)
+{
+  return top_ptr == &contents[STACK_SIZE];
+}
+6. [was #10; modified]
+
+int sum_array(const int a[], int n)
+{
+  int *p, sum;
+
+  sum = 0;
+  for (p = a; p < a + n; p++)
+    sum += *p;
+  return sum;
+}
+13. [was #12; modified]
+
+#define N 10
+
+double ident[N][N], *p;
+int num_zeros = N;
+
+for (p = &ident[0][0]; p <= &ident[N-1][N-1]; p++)
+  if (num_zeros == N) {
+    *p = 1.0;
+    num_zeros = 0;
+  } else {
+    *p = 0.0;
+    num_zeros++;
+  }
+15. [was #14]
+
+int *p;
+
+for (p = temperatures[i]; p < temperatures[i] + 24; p++)
+  printf("%d ", *p);
+Answers to Selected Programming Projects
+
+1. [was #4]
+
+(a)
+
+#include <stdio.h>
+
+#define MSG_LEN 80     /* maximum length of message */
+
+int main(void)
+{
+  char msg[MSG_LEN];
+  int i;
+
+  printf("Enter a message: ");
+  for (i = 0; i < MSG_LEN; i++) {
+    msg[i] = getchar();
+    if (msg[i] == '\n')
+      break;
+  }
+
+  printf("Reversal is: ");
+  for (i--; i >= 0; i--)
+    putchar(msg[i]);
+  putchar('\n');
+
+  return 0;
+}
+(b)
+
+#include <stdio.h>
+
+#define MSG_LEN 80     /* maximum length of message */
+
+int main(void)
+{
+  char msg[MSG_LEN], *p;
+
+  printf("Enter a message: ");
+  for (p = &msg[0]; p < &msg[MSG_LEN]; p++) {
+    *p = getchar();
+    if (*p == '\n')
+      break;
+  }
+
+  printf("Reversal is: ");
+  for (p--; p >= &msg[0]; p--)
+    putchar(*p);
+  putchar('\n');
+
+  return 0;
+}
+3. [was #8]
+
+#include <stdio.h>
+
+#define MSG_LEN 80     /* maximum length of message */
+
+int main(void)
+{
+  char msg[MSG_LEN], *p;
+
+  printf("Enter a message: ");
+  for (p = msg; p < msg + MSG_LEN; p++) {
+    *p = getchar();
+    if (*p == '\n')
+      break;
+  }
+
+  printf("Reversal is: ");
+  for (p--; p >= msg; p--)
+    putchar(*p);
+  putchar('\n');
+
+  return 0;
+}
+
+
+
+
+
+
+
+
+BLOG
+-学了指针不能忘的“本”-
+scanf("%d", &i)
+由于scanf函数的实际参数是指针，所以在
+int *p的情况下
+scanf("%d", p)
+是正确的
+花了很长时间才记得加&的习惯，现在要开始高度注意有&与没有&
+
+-承接11章中“指针的疑惑”-
+“scanf函数的实际参数必须是指针”——P177
+“数组名在传递给函数时，总是被视为指针”——P189
+在平时没有“表面”上使用指针的时候，其实指针也无时无刻不在。
+
+-调用含有数组型形式参数的函数-
+函数定义如下：
+int find_largest(int *a, int n)
+{
+    ....
+}
+在main中先声明int a[n]再调用上函数时
+find_largest(a, N)
+or
+find_largest(&a, N)
+第二种调用方式编译时可以通过，但是会显示如下“警告”
+warning: passing argument 1 of 'find_largest' from incompatible pointer type(find_largest的传递参数1是不相容的指针类型）
+note: expected 'int *' but argument is of type 'int (*)[N]'（形式参数是int *类型但实际参数是int *[N]类型)
+“当我们声明一个指向二维数组的指针int *a[m][n]时，a的类型是int *[n]”
+这就说明在用第二种方法调用函数时，我们传入的是一个二维数组
+所以，在调用函数时需要我们区分这个
+关于使用风格的话，我也选用书上(P194)采用的办法。
+
+另：
+在main中先声明int a[m][n], b[m];再调用find_largest函数时
+find_largest(a[n], m * n)
+or
+find_largest(&b[m], m * n)
+
+-一道有趣的题目-
+C语言中文网上有一道有趣的题目可以用来检查自己对于数组的不同访问形式得到的结果，实在很有意思
+(http://c.biancheng.net/cpp/html/2824.html)
+
+-指针和多维数组-
+我觉得书本的内容辅以 C语言中文网-C语言指针与二维数组 理解效果更好（http://c.biancheng.net/cpp/html/2930.html）
+总结：
+对于二维数组a[i][j]:
+a[i], &a[i], a+i, &a[i][0]
+都是指向数组a的第i行的第0个元素的地址
+&a[i][j], a[i]+j, (*(a+i)+j)
+都是指向数组a的第i行的第j个元素的地址
+
+-传递指针作为函数的实际参数中的一个问题-
+问题来源于P196-E12
+简化问题如下：
+#include <stdio.h>
+
+/* Function */
+void change0(const int *a, int n, int *i_0)
+{
+    i_0 = a + 2;
+}
+
+void change1(const int *a, int n, int *i_1)
+{
+    i_1 = &a[2];
+}
+
+void change2(const int *a, int n, int *i_2)
+{
+    *i_2 = *(a + 2);
+}
+
+void change3(const int *a, int n, int *i_3)
+{
+    *i_3 = a[2];
+}
+
+int main(void)
+{
+    int a[3] = {1, 2, 3};
+    int *i_0 = &a[0], *i_1 = &a[0], *i_2 = &a[0], *i_3 = &a[0];
+
+    change0(a, 3, i_0);
+    printf("array:%d %d %d\n", a[0], a[1], a[2]);
+    printf("%d %d %d %d\n\n", *i_0, *i_1, *i_2, *i_3);
+
+    change1(a, 3, i_1);
+    printf("array:%d %d %d\n", a[0], a[1], a[2]);
+    printf("%d %d %d %d\n\n", *i_0, *i_1, *i_2, *i_3);
+
+    change2(a, 3, i_2);
+    printf("array:%d %d %d\n", a[0], a[1], a[2]);
+    printf("%d %d %d %d\n\n", *i_0, *i_1, *i_2, *i_3);
+
+    change3(a, 3, i_3);
+    printf("array:%d %d %d\n", a[0], a[1], a[2]);
+    printf("%d %d %d %d\n\n", *i_0, *i_1, *i_2, *i_3);
+
+    return 0;
+}
+从函数change0和change1中可以看出，如果用上面的方法在函数内企图改变指针的指向是不可行的（这其实与指针也是变量有关）
+结合函数change3和change4中改变了a[0]的值之后使得相关的i改变了值
+间接说明了“C语言用值进行参数传递”（P176）
+如果要实现在函数内改变指针的指向，可以使用到下面的办法：
+1.使用返回指针的函数
+int *change(const int *a, int n, int *i)
+{
+    i = a + 2;
+    return i;
+}
+2.函数传入一个指向指针的指针
+void change(const int *a, int n, int **i)
+{
+    *i = a + 2;
+}
+函数调用时要注意“change(a, 3, &i)”，i已声明为指针，&i为指向指针的指针
+
+资料参考：
+http://blog.csdn.net/laojing123/article/details/6544275
+
+-指针的比较-
+判断下面关系是否合法，如果合法请说明结果是true还是false？
+int a[3] = {1, 2, 3}, b[2][2] = {1, 2, 3, 4};
+int *m = &a[0], *n = &b[0][0];
+
+(1)m < a[2]
+(2)m < a[0] + 2
+(3)m < a + 2
+(4)n < b[1][1]
+(5)n < b[0][0] + 3
+(6)n < b[0] + 3
+(7)n < b + 3
+
+答案：
+(1)m < a[2]         不合法，指针和整数之间的比较，改为m < &a[2] 
+(2)m < a[0] + 2     不合法，指针和整数之间的比较，改为m < &a[0] + 2
+(3)m < a + 2        合法且true
+(4)n < b[1][1]      不合法，指针和整数之间的比较，改为n < &b[1][1]
+(5)n < b[0][0] + 3  不合法，指针和整数之间的比较，改为n < &b[0][0] + 3
+(6)n < b[0] + 3     合法且true，不可修改为n < &b[0] + 3，IDE会显示warning: initialization from incompatible pointer type(指针类型初始化不兼容），这种用法主要是在处理二维数组中单独某一行中比较常用，例如清零第i行，n < b[i] + 3
+(7)n < b + 3        合法且true
+注意看(2)和(6)之间的区别
+总结，在使用形式上指针与数组共存的比较，要注意看数组是几维数组

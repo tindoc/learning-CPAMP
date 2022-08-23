@@ -2,10 +2,10 @@
 
 int main(void)
 {
-    //ÒòÎªÓÃµ½ÁËÁ½¸öforÓï¾ä£¬ËùÒÔ¶¨ÒåÁË±äÁ¿i_daysºÍi_starting_day
+    //å› ä¸ºç”¨åˆ°äº†ä¸¤ä¸ªforè¯­å¥ï¼Œæ‰€ä»¥å®šä¹‰äº†å˜é‡i_dayså’Œi_starting_day
     int days, starting_day, i_days, i_starting_day;
 
-    //ÊäÈë
+    //è¾“å…¥
     printf("Enter number of days in month: ");
     scanf("%d", &days);
     printf("Enter starting day of the week:(1=Sun, 7=Sat): ");
@@ -13,26 +13,26 @@ int main(void)
 
     for(i_starting_day = 1; i_starting_day != starting_day; i_starting_day++)
         printf("   ");
-    //ÓÃÕâ¸öforÓï¾äÊä³öÆğÊ¼ÈÕ²»ÊÇSunËùÕ¼ÓÃµÄ¿Õ¸ñ
-    //Èç¹ûÆğÊ¼ÈÕÊÇµÚÈıÌì£¬×îºói_starting_day=3
-    //ÓÉÓÚÒÔÉÏi_starting_day=3,Êµ¼ÊÕ¼µÄÊÇÁ½¸öÎ»ÖÃ
-    //ËùÒÔÔÚÏÂÃæ(i_days + i_starting_day - 1)ÖĞÒª¼õ1
+    //ç”¨è¿™ä¸ªforè¯­å¥è¾“å‡ºèµ·å§‹æ—¥ä¸æ˜¯Sunæ‰€å ç”¨çš„ç©ºæ ¼
+    //å¦‚æœèµ·å§‹æ—¥æ˜¯ç¬¬ä¸‰å¤©ï¼Œæœ€åi_starting_day=3
+    //ç”±äºä»¥ä¸Ši_starting_day=3,å®é™…å çš„æ˜¯ä¸¤ä¸ªä½ç½®
+    //æ‰€ä»¥åœ¨ä¸‹é¢(i_days + i_starting_day - 1)ä¸­è¦å‡1
 
     for(i_days = 1; i_days <= days; i_days++){
         printf("%3d", i_days);
-        if((i_days + i_starting_day - 1) % 7 == 0)    //ÔÚÒ»¸öĞÇÆÚµÄ×îºóÒ»ÈÕÓÃÕâ¸öifÊµÏÖ×ªĞĞ
+        if((i_days + i_starting_day - 1) % 7 == 0)    //åœ¨ä¸€ä¸ªæ˜ŸæœŸçš„æœ€åä¸€æ—¥ç”¨è¿™ä¸ªifå®ç°è½¬è¡Œ
             printf("\n");
     }
 
     /*
-    printf("\n\n%d %d",i_starting_day, i_days );    //Õâ¸öÖ÷ÒªÓÃÀ´²é¿´Á½¸öiµÄÖµ
+    printf("\n\n%d %d",i_starting_day, i_days );    //è¿™ä¸ªä¸»è¦ç”¨æ¥æŸ¥çœ‹ä¸¤ä¸ªiçš„å€¼
     */
 
     return 0;
 }
 
 
-/*¹Ù·½´ğ°¸
+/*å®˜æ–¹ç­”æ¡ˆ
 #include <stdio.h>
 
 int main(void)
@@ -44,11 +44,11 @@ int main(void)
   printf("Enter starting day of the week (1=Sun, 7=Sat): ");
   scanf("%d", &start_day);
 
-  // print any leading "blank dates" ´òÓ¡¿ªÊ¼µÄ¡±¿Õ°×ÈÕÆÚ¡°
+  // print any leading "blank dates" æ‰“å°å¼€å§‹çš„â€ç©ºç™½æ—¥æœŸâ€œ
   for (i = 1; i < start_day; i++)
     printf("   ");
 
-  // now print the calendar ÏÖÔÚ´òÓ¡ÈÕÀú
+  // now print the calendar ç°åœ¨æ‰“å°æ—¥å†
   for (i = 1; i <= n; i++) {
     printf("%3d", i);
     if ((start_day + i - 1) % 7 == 0)
@@ -57,6 +57,6 @@ int main(void)
 
   return 0;
 }
-  //Õâ´Î¾õµÃºÍ´ğ°¸²»ÏàÉÏÏÂ£¬´ğ°¸µÄ¸ßÃ÷Ö®´¦ÔÚÓÚÖØĞÂ³õÊ¼»¯ÁËiµÄÖµ
+  //è¿™æ¬¡è§‰å¾—å’Œç­”æ¡ˆä¸ç›¸ä¸Šä¸‹ï¼Œç­”æ¡ˆçš„é«˜æ˜ä¹‹å¤„åœ¨äºé‡æ–°åˆå§‹åŒ–äº†içš„å€¼
 
 */

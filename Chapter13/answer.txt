@@ -1,0 +1,342 @@
+2. [was #2]
+
+(a) Illegal; p is not a character.
+(b) Legal; output is a.
+(c) Legal; output is abc.
+(d) Illegal; *p is not a pointer.
+
+4. [was #4]
+
+(a)
+
+int read_line(char str[], int n)
+{
+  int ch, i = 0;
+
+  while ((ch = getchar()) != '\n')
+    if (i == 0 && isspace(ch))
+      ;   /* ignore */
+    else if (i < n)
+      str[i++] = ch;
+  str[i] = '\0';
+  return i;
+}
+(b)
+
+int read_line(char str[], int n)
+{
+  int ch, i = 0;
+
+  while (!isspace(ch = getchar()))
+    if (i < n)
+      str[i++] = ch;
+  str[i] = '\0';
+  return i;
+}
+(c)
+
+int read_line(char str[], int n)
+{
+  int ch, i = 0;
+
+  do {
+    ch = getchar();
+    if (i < n)
+      str[i++] = ch;
+  } while (ch != '\n');
+  str[i] = '\0';
+  return i;
+}
+(d)
+
+int read_line(char str[], int n)
+{
+  int ch, i;
+
+  for (i = 0; i < n; i++) {
+    ch = getchar();
+    if (ch == '\n')
+      break;
+    str[i] = ch;
+  }
+  str[i] = '\0';
+  return i;
+}
+6. [was #6]
+
+void censor(char s[])
+{
+  int i;
+
+  for (i = 0; s[i] != '\0'; i++)
+    if (s[i] == 'f' && s[i+1] == 'o' && s[i+2] =='o')
+      s[i] = s[i+1] = s[i+2] = 'x';
+}
+Note that the short-circuit evaluation of && prevents the if statement from testing characters that follow the null character.
+
+8. [was #10] tired-or-wired?
+
+10. [was #12] The value of q is undefined, so the call of strcpy attempts to copy the string pointed to by p into some unknown area of memory. Exercise 2 in Chapter 17 discusses how to write this function correctly.
+
+15. [was #8]
+
+(a) 3
+(b) 0
+(c) The length of the longest prefix of the string s that consists entirely of characters from the string t. Or, equivalently, the position of the first character in s that is not also in t.
+
+16. [was #16]
+
+int count_spaces(const char *s)
+{
+  int count = 0;
+
+  while (*s)
+    if (*s++ == ' ')
+      count++;
+  return count;
+}
+Answers to Selected Programming Projects
+
+1. [was #14]
+
+#include <stdio.h>
+#include <string.h>
+
+#define WORD_LEN 20
+
+void read_line(char str[], int n);
+
+int main(void)
+{
+  char smallest_word[WORD_LEN+1],
+       largest_word[WORD_LEN+1],
+       current_word[WORD_LEN+1];
+
+  printf("Enter word: ");
+  read_line(current_word, WORD_LEN);
+  strcpy(smallest_word, strcpy(largest_word, current_word));
+
+  while (strlen(current_word) != 4) {
+    printf("Enter word: ");
+    read_line(current_word, WORD_LEN);
+    if (strcmp(current_word, smallest_word) < 0)
+      strcpy(smallest_word, current_word);
+    if (strcmp(current_word, largest_word) > 0)
+      strcpy(largest_word, current_word);
+  }
+
+  printf("\nSmallest word: %s\n", smallest_word);
+  printf("Largest word: %s\n", largest_word);
+
+  return 0;
+}
+
+void read_line(char str[], int n)
+{
+  int ch, i = 0;
+
+  while ((ch = getchar()) != '\n')
+    if (i < n)
+      str[i++] = ch;
+  str[i] = '\0';
+}
+4. [was #18]
+
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+  int i;
+
+  for (i = argc - 1; i > 0; i--)
+    printf("%s ", argv[i]);
+  printf("\n");
+
+  return 0;
+}
+6. [was #20]
+
+#include <ctype.h>
+#include <stdio.h>
+#include <string.h>
+
+#define NUM_PLANETS 9
+
+int string_equal(const char *s, const char *t);
+
+int main(int argc, char *argv[])
+{
+  char *planets[] = {"Mercury", "Venus", "Earth",
+                     "Mars", "Jupiter", "Saturn",
+                     "Uranus", "Neptune", "Pluto"};
+  int i, j;
+
+  for (i = 1; i < argc; i++) {
+    for (j = 0; j < NUM_PLANETS; j++)
+      if (string_equal(argv[i], planets[j])) {
+        printf("%s is planet %d\n", argv[i], j + 1);
+        break;
+      }
+    if (j == NUM_PLANETS)
+      printf("%s is not a planet\n", argv[i]);
+  }
+
+  return 0;
+}
+
+int string_equal(const char *s, const char *t)
+{
+  int i;
+
+  for (i = 0; toupper(s[i]) == toupper(t[i]); i++)
+    if (s[i] == '\0')
+      return 1;
+
+  return 0;
+}
+
+
+
+Blog：
+题头：
+每次Run之前都要阅读并推演一次自己的程序，不要依赖于Run来发现错误，每次修改之后也需要这样做。
+做题目的时候发现难点的或者有价值的题目应该要标识出来，方便以后重新编写和回忆。
+
+-在字符串字面量中使用十六进制-
+http://blog.sina.com.cn/s/blog_60d6aadc0100undv.html
+
+-printf, putchar, puts-
+见P220-E1
+
+-p++与p+i-
+1.
+char p[] = "abc";
+
+p++;
+
+puts(p);
+2.
+char p[] = "abc";
+
+p+1;
+
+puts(p);
+其中1输出的结果是bc，2输出的结果是abc
+这里想说的是在for循环或者函数中使用数组名作为指针时需要注意这个问题，有时候return的早已经不是原来的数组了
+
+-strcpy与strcat-
+见P221-E7
+因为strcpy函数把后面的字符复制到前面直到遇到'\0'（注意，这个'\0'也会被复制，所以在前面的字符长度大于后面时，由于'\0'的作用，只会保留到后面字符的最后一位，例如strcpy(str, "tire-bouchon");strcpy(&str[4], "d-or-wi");的结果为tired-wi），而strcat函数会自动将后面的字符以及一个'\0'复制到前面的字符中
+
+-指向字符串的指针的初始化-
+见P223第3题
+
+-toupper函数-
+http://www.kuqin.com/clib/ctype/toupper.html
+
+-i++的副作用-
+    while (name[i] == ' ')    //清除名之前的0
+        i++;
+    first_word = name[i];
+or
+    while (name[i++] == ' ')    //清除名之前的0
+	;
+    first_word = name[i];
+
+-疑惑-
+#include <stdio.h>
+
+int main(void)
+{
+    char a[10], ch;
+    int i;
+
+    printf("Enter: ");
+    for (i = 0; (ch = getchar()) != '\n'; i++)
+        a[i] = ch;
+
+//    for (i = 0; a[i] != '\n'; i++)
+//        a[i] = getchar();
+
+    printf("%s", a);
+    printf("||||");
+
+    return 0;
+}
+
+-动态分配字符串+指针数组=动态分配数组+数组指针-
+P296
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define LENGTH_WORD 20
+#define COUNT_WORDS 30
+
+
+int main(void)
+{
+    char *sentence[COUNT_WORDS], ch, punctuation;
+    //问题1：
+    int i, len, j;
+
+    printf("Enter a sentence: ");
+    for (i = 0; i < COUNT_WORDS; i++) {
+        sentence[i] = (char *)malloc(LENGTH_WORD * sizeof(char));
+        scanf(" %s", sentence[i]);
+        ch = getchar();
+        len = strlen(sentence[i]);
+        sentence[i][len] = '\0';  //问题2：
+        if (ch == '\n') {  //问题3：
+            if (sentence[i][len - 1] == '.'     ||
+                sentence[i][len - 1] == '\?'    ||
+                sentence[i][len - 1] == '!'
+                ) {
+                //问题4：
+                punctuation = sentence[i][len - 1];
+                sentence[i][len - 1] = '\0';
+            }   //second-if
+            break;
+        }   //first-if
+    }   //for
+
+    for ( ; i > 0; i--)
+        printf("%s ", sentence[i]);
+    printf("%s%c", sentence[0], punctuation);
+
+    return 0;
+}
+
+问题1：在这里我声明的是指针数组，是一维的？我知道可以把二维数组当成一维数组处理，但是我声明的时候本意是需要二维数组，还是一维数组（这莫非是把一维数组当二维数组用？）
+问题2：这里需要添加'\0'吗？
+问题3：在这里我尝试过if(sentence[i][len - 1] == '\n')但是循环没有在我输入换行符的时候跳出，这是说明在最后的换行符不能储存到字符串中吗？可是“abcdef\n"的字符长度还是7啊
+问题4：在判断条件中使用sentence[i][len-1] == '.'&&'\?'&&'!'这种做法怎么样（经测试，结果是正确，有没有隐藏的缺陷）
+问题5：“动态分配数组”是指动态分配数组元素的个数？可是这样的作用是什么？为了将声明了但没有初始化的数组元素占据的内存释放？
+声明但没有初始化：
+int a[20], i;
+for (i = 0; i < 10; i++)
+    a[i] = i;
+声明了也初始化了：
+int a[20] = {0}, i;
+for (i = 0; i < 10; i++)
+    a[i] = i;
+
+
+在我们声明数组a[20]，但是我们没有使用到所有，没有使用的也会占据内存，自动分配随机值到没有初始化的数组元素中
+http://www.cnblogs.com/majiangjiang/p/3564968.html  重要
+http://www.cnblogs.com/miraclecoder/p/4051173.html
+数组指针 http://c.biancheng.net/cpp/html/76.html
+指针数组 http://c.biancheng.net/cpp/html/3246.html
+数组指针和指针数组： http://www.cnblogs.com/Romi/archive/2012/01/10/2317898.html
+
+-读取字符串，遇到'\n'停止-
+总结出来的惯用法：
+gets(char);
+if (strlen(char) > CHAR_LEN)
+    message[CHAR + 1] = '\0';
+如果“体贴”一点用户的，可以加多一个输出信息：
+gets(char);
+if (strlen(char) > CHAR_LEN) {
+    printf(" - No enough spaces And abandon -\n");
+    message[CHAR + 1] = '\0';
+}

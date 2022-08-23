@@ -4,7 +4,7 @@ int main(void)
 {
   float commission, value;
 
-  while(value != 0){   //Ìí¼ÓµÄÑ­»·
+  while(value != 0){   //æ·»åŠ çš„å¾ªçŽ¯
 
   printf("Enter value of trade: ");
   scanf("%f", &value);
@@ -25,7 +25,7 @@ int main(void)
   if (commission < 39.00f)
     commission = 39.00f;
 
-  printf("Commission: $%.2f\n\n", commission);    //ÎªÁËÃÀ¹Û£¬¼ÓÁËÒ»¸ö×ªÐÐ·û
+  printf("Commission: $%.2f\n\n", commission);    //ä¸ºäº†ç¾Žè§‚ï¼ŒåŠ äº†ä¸€ä¸ªè½¬è¡Œç¬¦
 
   }
   return 0;

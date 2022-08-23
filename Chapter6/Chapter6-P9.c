@@ -2,11 +2,11 @@
 
 int main(void)
 {
-    //¶¨Òå±äÁ¿£¬nÎªÊäÈëµÄÊÇ»¹´ûµÄ´ÎÊı
+    //å®šä¹‰å˜é‡ï¼Œnä¸ºè¾“å…¥çš„æ˜¯è¿˜è´·çš„æ¬¡æ•°
     float loan, rate, monthly_pay;
     int n, i = 1;
 
-    //ÊäÈë
+    //è¾“å…¥
     printf("Enter amount of loan: ");
     scanf("%f", &loan);
     printf("Enter interest rate: ");
@@ -16,9 +16,9 @@ int main(void)
     printf("Enter the tomes you pay: ");
     scanf("%d", &n);
 
-    //Ñ­»·
+    //å¾ªç¯
     while(i <= n){
-        loan = loan - monthly_pay + loan * rate / 100.00f / 12.00f;    //ÕâÑù¿ÉÒÔ¼õÉÙ±äÁ¿µÄ¶¨Òå
+        loan = loan - monthly_pay + loan * rate / 100.00f / 12.00f;    //è¿™æ ·å¯ä»¥å‡å°‘å˜é‡çš„å®šä¹‰
         printf("Balance remaining after %d payment: $%.2f\n", i, loan);
         i++;
     }

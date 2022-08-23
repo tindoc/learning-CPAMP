@@ -1,4 +1,4 @@
-//square3在P77，程序说明在P71
+//square3鍦≒77锛岀▼搴忚鏄庡湪P71
 
 #include <stdio.h>
 
@@ -15,7 +15,7 @@ int main(void)
     printf("%10d%10d\n", i, square);
     square += odd;
   }
-  //不知道题目的意思是不是这个
+  //涓嶇煡閬撻鐩殑鎰忔�濇槸涓嶆槸杩欎釜
 
   return 0;
 }

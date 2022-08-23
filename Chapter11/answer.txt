@@ -1,0 +1,105 @@
+2. [was #2] (e), (f), and (i) are legal. (a) is illegal because p is a pointer to an integer and i is an integer. (b) is illegal because *p is an integer and &i is a pointer to an integer. (c) is illegal because &p is a pointer to a pointer to an integer and q is a pointer to an integer. (d) is illegal for reasons similar to (c). (g) is illegal because p is a pointer to an integer and *q is an integer. (h) is illegal because *p is an integer and q is a pointer to an integer.
+
+4. [was #4; modified]
+
+void swap(int *p, int *q)
+{
+  int temp;
+
+  temp = *p;
+  *p = *q;
+  *q = temp;
+}
+6. [was #6]
+
+void find_two_largest(int a[], int n, int *largest,
+                      int *second_largest)
+{
+  int i;
+
+  if (a[0] > a[1]) {
+    *largest = a[0];
+    *second_largest = a[1];
+  } else {
+    *largest = a[1];
+    *second_largest = a[0];
+  }
+
+  for (i = 2; i < n; i++)
+    if (a[i] > *largest) {
+      *second_largest = *largest;
+      *largest = a[i];
+    } else if (a[i] > *second_largest)
+      *second_largest = a[i];
+}
+
+
+
+
+
+
+
+BLOG
+-理解和使用指针-
+理解：
+严格地说，一个指针是一个地址，是一个常量。而一个指针变量却可以被赋予不同的指针值，是变量。但常把指针变量简称为指针。
+为什么不直接使用地址来代替指针？
+在C语言中，一种数据类型或数据结构往往都占有一组连续的内存单元。用“地址”这个概念并不能很好地描述一种数据类型或数据结构，而“指针”虽然实际上也是一个地址，但它却是一个数据结构的首地址，它是“指向”一个数据结构的，因而概念更为清楚，表示更为明确。 这也是引入“指针”概念的一个重要原因。
+使用：
+使用时对变量使用&运算符产生指向变量的指针，而对指针使用*运算符则可以返回到原始变量。
+（部分资料摘抄自 C语言中文网 ）
+（http://c.biancheng.net/cpp/html/71.html)
+
+-指针的疑惑-
+“因为c语言用值进行参数传递，所以在函数调用中用作实际参数的变量无法改变”（P176）
+但是如果我事先声明了外部变量，再使用这个外部变量为实际参数传给参数也时可以的啊。
+http://www.zhihu.com/question/38864414?sort=created
+其中“陈振原”、“曾煜”用内存的机制来解释，挺清晰的，其中
+“其实你所定义的各种变量，其实都是系统给你包装好的指针，但你不觉得他是指针，编译转汇编过程，这些你所定义的变量都会还原成地址，所以代码其实都是对地址操作的”——陈振原
+这句话我觉得很有用，指针大概就是科技黑箱，不过由于有使用的需求，就从黑箱提出来了。
+另外：
+“Kerr Wang”的回答中同时提到了外部变量和全局变量，这其中的的外部变量应该是指函数外的变量，而不是书中P156所说的外部变量。
+
+
+-神秘的错误-
+error: expected ')' before '&' token
+网上也看了不少贴，没有类似的错误原因
+#include <stdio.h>
+
+/* prototype */
+void reduce(int numerator, int denominator,
+            int *reduced_numerator, int *reduced_denominator);
+
+int main(void)
+{
+    int m, n, reduced_m, reduced_n;
+
+    printf("Enter a fraction: ");
+    scanf("%d/%d", &m, &n);
+
+     void reduce(m, n, &reduced_m, &reduced_n);    //错误出现在这行
+
+    printf("In lowest terms: %d/%d\n", reduced_m, reduced_n);
+
+    return 0;
+}
+
+void reduce(int numerator, int denominator,
+            int *reduced_numerator, int *reduced_denominator)
+{
+    int mod, m, n;
+
+    m = numerator;
+    n = denominator;
+
+    while (n != 0) {
+        mod = m % n;
+        m = n;
+        n = mod;
+    }
+
+    *reduced_numerator = numerator / m;
+    *reduced_denominator = denominator / m;
+}
+最后自己到CSDN注册账号提问找到了原因，调用函数的时候按函数原型的写法写进去了。（ToT）
+以后要注意，注意~~~~~
