@@ -1,5 +1,5 @@
-# Learning C2APP
-C2APP, *[C Programming: A modern Approach](http://knking.com/books/c2/index.html)* - K. N. King
+# Learning CPAMP
+CPAMP, *[C Programming: A Modern Approach](http://knking.com/books/c2/index.html)* - K. N. King
 
 # Description
 I learn it by myself this day but I found this answers of this book isn't completed.
